@@ -89,6 +89,11 @@ public class MovieController {
         modelAndView.addObject("movie", movie);
         System.out.println("going to movie-list/summary with id value " + id + "and movie title " + movie.getTitle());
 
+        if (movieService.findByTitle("default") != null) {
+            logger.info("deleting default from Get method");
+            movieService.delete(movieService.findByTitle("default"));
+        }
+
         return modelAndView;
     }
 
