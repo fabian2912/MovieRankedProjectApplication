@@ -40,7 +40,8 @@ public class MovieController {
         System.out.println("the movie size (called from controller) is " + movies.size());
 //        movies.add(movie);
 //        movies.add(movie);
-        Movie movie = new Movie(1L, "default", "0000", "0000");
+//        Movie movie = new Movie(1L, "default", "0000", "0000");
+        Movie movie = movieService.findById(1L);
         movieService.save(movie);
         modelAndView.addObject("movie", movie);
         if(movies.size() == 0) {
@@ -53,9 +54,9 @@ public class MovieController {
                 logger.info("movies.size > 1 entered");
             if (movieService.findByTitle("default") != null) {
                 logger.info("find by title default entered");
-                movieService.delete(movieService.findByTitle("default"));
+//                movieService.delete(movieService.findByTitle("default"));
                 if (movies.contains(movieService.findByTitle("default"))) {
-                    movies.remove(movieService.findByTitle("default"));
+//                    movies.remove(movieService.findByTitle("default"));
                     logger.info("removed movieService.findByTitle(");
                 }
                 logger.info("find by title default completed");
@@ -99,7 +100,7 @@ public class MovieController {
     }
 
     @PostMapping // @Valid @ModelAttribute
-    public ModelAndView post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
+    public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
         String unrefinedTitle = movie.getTitle();
         String[] splitTitle = unrefinedTitle.split(Pattern.quote(" "));
         String title = "";
@@ -146,13 +147,13 @@ public class MovieController {
         }
         logger.info("exiting post");
 
-        if (movieService.findByTitle("default") != null) {
-            System.err.println("deleting default from post method");
-            movieService.delete(movieService.findByTitle("default"));
-        }
+//        if (movieService.findByTitle("default") != null) {
+//            System.err.println("deleting default from post method");
+//            movieService.delete(movieService.findByTitle("default"));
+//        }
 
 //        logger.info("called get()");
-        return modelAndView;
+        return "redirect:movie-list";
     }
 
 //    @PostMapping
@@ -187,5 +188,39 @@ public class MovieController {
     public @ResponseBody String delete() {
         return "delete";
     }
+    //this post-mapping will post-redirect-get
+//    @PostMapping // @Valid @ModelAttribute
+//    public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
+//        String title = movie.getTitle();
+//        logger.info("entering post with title " + title);
+//        ModelAndView modelAndView = new ModelAndView();
+////        ModelAndView modelAndView = new ModelAndView("movie-list");
+//        MovieSearchParser movieSearchParser = new MovieSearchParser();
+//
+//        if(result.hasErrors()) {
+//            logger.info("result has errors - post");
+////            modelAndView.setViewName("movie-list");
+//            modelAndView.setViewName("redirect");
+//        } else {
+//            logger.info("result has no errors - post");
+////            modelAndView.setViewName("movie-list");
+//            modelAndView.setViewName("redirect");
+//            logger.info("movie Controller - passing over to MovieSearchParser");
+//            Movie movie1 = movieSearchParser.findMovieByTitle(title);
+//            movie1 = movieService.save(movie1);
+////            modelAndView.addObject("addMovieTitle", movie.getTitle());
+//            modelAndView.addObject("movie", movie1);
+//        }
+//        logger.info("exiting post");
+//
+////        this code below breaks the JSP pages, the default movie is needed for the input box.
+////        if (movieService.findByTitle("default") != null) {
+////            logger.info("deleting default from post method");
+////            movieService.delete(movieService.findByTitle("default"));
+////        }
+//
+////        logger.info("called get()");
+//        return "redirect:movie-list";
+//    }
 
 }
