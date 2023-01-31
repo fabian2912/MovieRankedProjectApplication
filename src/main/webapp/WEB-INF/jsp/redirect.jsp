@@ -11,7 +11,7 @@
 <body>
     <h1>Redirecting...</h1>
     <%
-        response.setIntHeader("Refresh", 1);
+        response.setIntHeader("Refresh", 0);
     %>
 
     <script type="text/javascript">
