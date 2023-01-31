@@ -23,6 +23,7 @@
                 <th>YEAR</th>
                 <th>COUNTRY</th>
                 <th>SUMMARY</th>
+                <th>VOTES</th>
             </tr>
             </thead>
             <tbody>
@@ -38,6 +39,13 @@
                                                         <c:param name="id" value="${movie.id}" />
                                                     </c:url>
                                     ">${movie.id}</a>
+                    </td>
+                    <td>
+                        <p id="votes">0<p>
+                    </td>
+                    <td>
+                        <button id="upvote" onclick="upvote()">Upvote</button>
+                        <script src="script.js" charset="utf-8"></script>
                     </td>
                 </tr>
             </c:forEach>
