@@ -40,8 +40,9 @@ public class MovieController {
         System.out.println("the movie size (called from controller) is " + movies.size());
 //        movies.add(movie);
 //        movies.add(movie);
-        Movie movie = new Movie(1L, "default", "0000", "0000");
-        movieService.save(movie);
+//        Movie movie = new Movie(1L, "default", "0000", "0000");
+        Movie movie = movieService.findById(1L);
+//        movieService.save(movie);
         modelAndView.addObject("movie", movie);
         if(movies.size() == 0) {
 //            logger.info("if size == 0 entered");
@@ -99,15 +100,17 @@ public class MovieController {
     }
 
     @PostMapping // @Valid @ModelAttribute
-    public ModelAndView post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
+    public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
         String unrefinedTitle = movie.getTitle();
         String[] splitTitle = unrefinedTitle.split(Pattern.quote(" "));
         String title = "";
         for (int i = 0; i < splitTitle.length; i++) {
             System.out.println("    " + splitTitle[i]);
             String newTitle = splitTitle[i].substring(0,1).toUpperCase() + splitTitle[i].substring(1).toLowerCase();
-            title = title + newTitle;
+            title = title + newTitle + " ";
         } // making sure the title is in Title Case to check for uniqueness
+        title = title.substring(0, title.length()-1);
+
 
         System.err.println("in post with title " + title);
 
@@ -125,6 +128,7 @@ public class MovieController {
             modelAndView.setViewName("redirect");
             logger.info("movie Controller - passing over to MovieSearchParser");
             Movie movie1 = movieSearchParser.findMovieByTitle(title);
+            System.err.println(movieService.findByTitle(title) + "---------------------");
 
             if (movieService.findByTitle(title) != null) {
                 System.err.println("movie " + title + " is already in the database");
@@ -146,13 +150,13 @@ public class MovieController {
         }
         logger.info("exiting post");
 
-        if (movieService.findByTitle("default") != null) {
-            System.err.println("deleting default from post method");
-            movieService.delete(movieService.findByTitle("default"));
-        }
+//        if (movieService.findByTitle("default") != null) {
+//            System.err.println("deleting default from post method");
+//            movieService.delete(movieService.findByTitle("default"));
+//        }
 
 //        logger.info("called get()");
-        return modelAndView;
+        return "redirect:movie-list";
     }
 
 //    @PostMapping
