@@ -2,6 +2,7 @@ package com.example.movieRankedProject.Controller;
 
 import com.example.movieRankedProject.Model.Movie;
 import com.example.movieRankedProject.Service.MovieService;
+//import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/movie-list")
@@ -39,10 +41,9 @@ public class MovieController {
 //        movies.add(movie);
 //        movies.add(movie);
 //        Movie movie = new Movie(1L, "default", "0000", "0000");
-//        movieService.save(movie);
-            Movie movie = movieService.findById(1L);
-            modelAndView.addObject("movie", movie);
-
+        Movie movie = movieService.findById(1L);
+        movieService.save(movie);
+        modelAndView.addObject("movie", movie);
         if(movies.size() == 0) {
 //            logger.info("if size == 0 entered");
 //            Movie movie = new Movie(1L, "default", "0000", "0000");
@@ -98,38 +99,62 @@ public class MovieController {
         return modelAndView;
     }
 
-//    @PostMapping // @Valid @ModelAttribute
-//    public ModelAndView post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
-//        String title = movie.getTitle();
-//        logger.info("entering post with title " + title);
-//        ModelAndView modelAndView = new ModelAndView();
-////        ModelAndView modelAndView = new ModelAndView("movie-list");
-//        MovieSearchParser movieSearchParser = new MovieSearchParser();
-//
-//        if(result.hasErrors()) {
-//            logger.info("result has errors - post");
-////            modelAndView.setViewName("movie-list");
-//            modelAndView.setViewName("redirect");
-//        } else {
-//            logger.info("result has no errors - post");
-////            modelAndView.setViewName("movie-list");
-//            modelAndView.setViewName("redirect");
-//            logger.info("movie Controller - passing over to MovieSearchParser");
-//            Movie movie1 = movieSearchParser.findMovieByTitle(title);
-//            movie1 = movieService.save(movie1);
-////            modelAndView.addObject("addMovieTitle", movie.getTitle());
-//            modelAndView.addObject("movie", movie1);
-//        }
-//        logger.info("exiting post");
-//
+    @PostMapping // @Valid @ModelAttribute
+    public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
+        String unrefinedTitle = movie.getTitle();
+        String[] splitTitle = unrefinedTitle.split(Pattern.quote(" "));
+        String title = "";
+        for (int i = 0; i < splitTitle.length; i++) {
+            System.out.println("    " + splitTitle[i]);
+            String newTitle = splitTitle[i].substring(0,1).toUpperCase() + splitTitle[i].substring(1).toLowerCase();
+            title = title + newTitle;
+        } // making sure the title is in Title Case to check for uniqueness
+
+        System.err.println("in post with title " + title);
+
+        ModelAndView modelAndView = new ModelAndView();
+//        ModelAndView modelAndView = new ModelAndView("movie-list");
+        MovieSearchParser movieSearchParser = new MovieSearchParser();
+
+        if(result.hasErrors()) {
+            System.err.println("result has errors - post");
+//            modelAndView.setViewName("movie-list");
+            modelAndView.setViewName("redirect");
+        } else {
+            logger.info("result has no errors - post");
+//            modelAndView.setViewName("movie-list");
+            modelAndView.setViewName("redirect");
+            logger.info("movie Controller - passing over to MovieSearchParser");
+            Movie movie1 = movieSearchParser.findMovieByTitle(title);
+
+            if (movieService.findByTitle(title) != null) {
+                System.err.println("movie " + title + " is already in the database");
+            }
+            if (movieService.findByTitle(title) == null) {
+                System.err.println("no similar title found");
+                if (movie1.getTitle() != null && movie1.getCountry() != null) { // checking that api returned valid movie
+                    movie1 = movieService.save(movie1);
+//            modelAndView.addObject("addMovieTitle", movie.getTitle());
+                    modelAndView.addObject("movie", movie1);
+                    System.err.println("valid movie added");
+                }
+                else {
+                    System.err.println("api incorrectly returned title");
+                }
+            } else {
+                System.err.println(title + " is already included in the database");
+            }
+        }
+        logger.info("exiting post");
+
 //        if (movieService.findByTitle("default") != null) {
-//            logger.info("deleting default from post method");
+//            System.err.println("deleting default from post method");
 //            movieService.delete(movieService.findByTitle("default"));
 //        }
-//
-////        logger.info("called get()");
-//        return modelAndView;
-//    }
+
+//        logger.info("called get()");
+        return "redirect:movie-list";
+    }
 
 //    @PostMapping
 //    public ModelAndView post(@Valid @ModelAttribute String title, BindingResult result) throws IOException {
@@ -164,38 +189,38 @@ public class MovieController {
         return "delete";
     }
     //this post-mapping will post-redirect-get
-    @PostMapping // @Valid @ModelAttribute
-    public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
-        String title = movie.getTitle();
-        logger.info("entering post with title " + title);
-        ModelAndView modelAndView = new ModelAndView();
-//        ModelAndView modelAndView = new ModelAndView("movie-list");
-        MovieSearchParser movieSearchParser = new MovieSearchParser();
-
-        if(result.hasErrors()) {
-            logger.info("result has errors - post");
-//            modelAndView.setViewName("movie-list");
-            modelAndView.setViewName("redirect");
-        } else {
-            logger.info("result has no errors - post");
-//            modelAndView.setViewName("movie-list");
-            modelAndView.setViewName("redirect");
-            logger.info("movie Controller - passing over to MovieSearchParser");
-            Movie movie1 = movieSearchParser.findMovieByTitle(title);
-            movie1 = movieService.save(movie1);
-//            modelAndView.addObject("addMovieTitle", movie.getTitle());
-            modelAndView.addObject("movie", movie1);
-        }
-        logger.info("exiting post");
-
-//        this code below breaks the JSP pages, the default movie is needed for the input box.
-//        if (movieService.findByTitle("default") != null) {
-//            logger.info("deleting default from post method");
-//            movieService.delete(movieService.findByTitle("default"));
+//    @PostMapping // @Valid @ModelAttribute
+//    public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
+//        String title = movie.getTitle();
+//        logger.info("entering post with title " + title);
+//        ModelAndView modelAndView = new ModelAndView();
+////        ModelAndView modelAndView = new ModelAndView("movie-list");
+//        MovieSearchParser movieSearchParser = new MovieSearchParser();
+//
+//        if(result.hasErrors()) {
+//            logger.info("result has errors - post");
+////            modelAndView.setViewName("movie-list");
+//            modelAndView.setViewName("redirect");
+//        } else {
+//            logger.info("result has no errors - post");
+////            modelAndView.setViewName("movie-list");
+//            modelAndView.setViewName("redirect");
+//            logger.info("movie Controller - passing over to MovieSearchParser");
+//            Movie movie1 = movieSearchParser.findMovieByTitle(title);
+//            movie1 = movieService.save(movie1);
+////            modelAndView.addObject("addMovieTitle", movie.getTitle());
+//            modelAndView.addObject("movie", movie1);
 //        }
-
-//        logger.info("called get()");
-        return "redirect:movie-list";
-    }
+//        logger.info("exiting post");
+//
+////        this code below breaks the JSP pages, the default movie is needed for the input box.
+////        if (movieService.findByTitle("default") != null) {
+////            logger.info("deleting default from post method");
+////            movieService.delete(movieService.findByTitle("default"));
+////        }
+//
+////        logger.info("called get()");
+//        return "redirect:movie-list";
+//    }
 
 }

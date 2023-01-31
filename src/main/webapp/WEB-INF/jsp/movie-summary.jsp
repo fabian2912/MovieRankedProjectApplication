@@ -55,5 +55,8 @@
     <form:form modelAttribute="movie">
         <form:label path="plot">Plot: ${movie.plot}</form:label><form:hidden path="plot" />
     </form:form>
+
+        <button onclick="location.href ='/movie-list'" >Return</button>
+
 </body>
 </html>
