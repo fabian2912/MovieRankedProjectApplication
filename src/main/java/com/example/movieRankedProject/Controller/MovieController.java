@@ -131,9 +131,15 @@ public class MovieController {
             }
             if (movieService.findByTitle(title) == null) {
                 System.err.println("no similar title found");
-                movie1 = movieService.save(movie1);
+                if (movie1.getTitle() != null && movie1.getCountry() != null) { // checking that api returned valid movie
+                    movie1 = movieService.save(movie1);
 //            modelAndView.addObject("addMovieTitle", movie.getTitle());
-                modelAndView.addObject("movie", movie1);
+                    modelAndView.addObject("movie", movie1);
+                    System.err.println("valid movie added");
+                }
+                else {
+                    System.err.println("api incorrectly returned title");
+                }
             } else {
                 System.err.println(title + " is already included in the database");
             }

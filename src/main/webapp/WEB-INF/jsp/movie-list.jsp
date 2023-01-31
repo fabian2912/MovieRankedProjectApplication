@@ -5,11 +5,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Add Movie</title>
+    <title>Movie Ranker</title>
 
 </head>
     <body>
-        <h1>We are on the poster page!</h1>
+        <h1>Movie Ranker</h1>
 
         <form:form action="/movie-list" method="post" modelAttribute="movie">
             <form:label path="Title">Title: </form:label> <form:input path="Title" type="text"/>
