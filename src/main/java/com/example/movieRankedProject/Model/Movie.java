@@ -1,14 +1,9 @@
 package com.example.movieRankedProject.Model;
 
-import com.example.movieRankedProject.Controller.MovieSearchParser;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-//import jakarta.persistence.*;
-//import jakarta.validation.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.io.IOException;
 
 @Entity
 @Table
@@ -44,6 +39,18 @@ public class Movie {
 
     @JsonProperty("Actors")
     private String Actors;
+
+    public Movie(String title, String year, String country, String rated, String director, String awards, String boxOffice, String plot, String actors) {
+        Title = title;
+        Year = year;
+        Country = country;
+        Rated = rated;
+        Director = director;
+        Awards = awards;
+        BoxOffice = boxOffice;
+        Plot = plot;
+        Actors = actors;
+    }
 
     public Long getId() {
         return id;
