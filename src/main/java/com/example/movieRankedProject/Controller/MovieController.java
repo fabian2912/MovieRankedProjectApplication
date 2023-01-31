@@ -16,6 +16,7 @@ import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/movie-list")
@@ -52,9 +53,9 @@ public class MovieController {
                 logger.info("movies.size > 1 entered");
             if (movieService.findByTitle("default") != null) {
                 logger.info("find by title default entered");
-//                movieService.delete(movieService.findByTitle("default"));
+                movieService.delete(movieService.findByTitle("default"));
                 if (movies.contains(movieService.findByTitle("default"))) {
-//                    movies.remove(movieService.findByTitle("default"));
+                    movies.remove(movieService.findByTitle("default"));
                     logger.info("removed movieService.findByTitle(");
                 }
                 logger.info("find by title default completed");
@@ -99,14 +100,23 @@ public class MovieController {
 
     @PostMapping // @Valid @ModelAttribute
     public ModelAndView post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
-        String title = movie.getTitle();
-        logger.info("entering post with title " + title);
+        String unrefinedTitle = movie.getTitle();
+        String[] splitTitle = unrefinedTitle.split(Pattern.quote(" "));
+        String title = "";
+        for (int i = 0; i < splitTitle.length; i++) {
+            System.out.println("    " + splitTitle[i]);
+            String newTitle = splitTitle[i].substring(0,1).toUpperCase() + splitTitle[i].substring(1).toLowerCase();
+            title = title + newTitle;
+        } // making sure the title is in Title Case to check for uniqueness
+
+        System.err.println("in post with title " + title);
+
         ModelAndView modelAndView = new ModelAndView();
 //        ModelAndView modelAndView = new ModelAndView("movie-list");
         MovieSearchParser movieSearchParser = new MovieSearchParser();
 
         if(result.hasErrors()) {
-            logger.info("result has errors - post");
+            System.err.println("result has errors - post");
 //            modelAndView.setViewName("movie-list");
             modelAndView.setViewName("redirect");
         } else {
@@ -115,14 +125,23 @@ public class MovieController {
             modelAndView.setViewName("redirect");
             logger.info("movie Controller - passing over to MovieSearchParser");
             Movie movie1 = movieSearchParser.findMovieByTitle(title);
-            movie1 = movieService.save(movie1);
+
+            if (movieService.findByTitle(title) != null) {
+                System.err.println("movie " + title + " is already in the database");
+            }
+            if (movieService.findByTitle(title) == null) {
+                System.err.println("no similar title found");
+                movie1 = movieService.save(movie1);
 //            modelAndView.addObject("addMovieTitle", movie.getTitle());
-            modelAndView.addObject("movie", movie1);
+                modelAndView.addObject("movie", movie1);
+            } else {
+                System.err.println(title + " is already included in the database");
+            }
         }
         logger.info("exiting post");
 
         if (movieService.findByTitle("default") != null) {
-            logger.info("deleting default from post method");
+            System.err.println("deleting default from post method");
             movieService.delete(movieService.findByTitle("default"));
         }
 
