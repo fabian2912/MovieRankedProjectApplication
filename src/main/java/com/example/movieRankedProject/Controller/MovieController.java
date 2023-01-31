@@ -107,7 +107,7 @@ public class MovieController {
         for (int i = 0; i < splitTitle.length; i++) {
             System.out.println("    " + splitTitle[i]);
             String newTitle = splitTitle[i].substring(0,1).toUpperCase() + splitTitle[i].substring(1).toLowerCase();
-            title = title + newTitle;
+            title = title + newTitle  + " ";
         } // making sure the title is in Title Case to check for uniqueness
 
         System.err.println("in post with title " + title);
