@@ -5,6 +5,8 @@ import com.example.movieRankedProject.Repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +55,13 @@ public class MovieServiceImpl implements MovieService {
             movie = movieRepository.getReferenceById(1L);
         }
         return movie;
+    }
+
+    @Override
+    public List<Movie> findAllByVotes() {
+        List<Movie> list = findAll();
+        list.sort(Comparator.comparing(Movie::getVotes));
+        Collections.reverse(list);
+        return list;
     }
 }

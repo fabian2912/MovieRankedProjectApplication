@@ -34,7 +34,7 @@ public class MovieController {
     public ModelAndView get() {
         logger.info("entering get()");
         ModelAndView modelAndView = new ModelAndView();
-        List<Movie> movies = movieService.findAll();
+        List<Movie> movies = movieService.findAllByVotes();
         System.out.println("the movie size (called from controller) is " + movies.size());
         Movie movie = movieService.findById(1L);
         modelAndView.addObject("movie", movie);
