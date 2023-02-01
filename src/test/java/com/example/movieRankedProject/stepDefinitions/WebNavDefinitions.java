@@ -9,6 +9,7 @@ import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -58,5 +59,18 @@ public class WebNavDefinitions {
     @And("I click on the return button")
     public void iClickOnTheReturnButton() {
         webDriver.findElement(By.id("return")).click();
+    }
+
+    @And("I enter {string} in the Title submit text field")
+    public void iEnterInTheTitleSubmitTextField(String movieTitle) {
+        WebElement titleField = webDriver.findElement(By.name("Title"));
+        titleField.clear();
+        titleField.sendKeys(movieTitle);
+
+    }
+
+    @And("I click the submit button")
+    public void iClickTheSubmitButton() {
+        webDriver.findElement(By.id("submit")).click();
     }
 }
