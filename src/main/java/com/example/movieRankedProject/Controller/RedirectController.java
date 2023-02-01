@@ -30,19 +30,4 @@ public class RedirectController  extends HttpServlet{
         // note: the response will contain the actual data to display to the user (the actual HTML)
     }
 
-//    @WebServlet("/redirect")
-//    public class ServletRedirect extends HttpServlet {
-//
-//        @Override
-//        protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//            Logger logger = LoggerFactory.getLogger(MovieController.class);
-//            logger.info("in /redirect, sending redirect to movie-list");
-//
-//            RequestDispatcher dispatcher = getServletContext()
-//                    .getRequestDispatcher("/movie-list");
-//            dispatcher.forward(req, resp);
-////            resp.sendRedirect("http://localhost:8080/movie-list");
-//        }
-//
-//    }
 }

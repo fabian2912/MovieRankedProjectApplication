@@ -27,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <form action="/movie-list/vote" method="post" modelAttribute="movie">
+            <form action="/movie-list" method="post" modelAttribute="movie">
             <c:forEach items="${movieList}" var="movie">
             <tr id = ${movie.id}>
                     <td>${movie.title}</td>

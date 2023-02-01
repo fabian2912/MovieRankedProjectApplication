@@ -78,21 +78,6 @@ public class MovieSearchParser {
         logger.info("completed mapping; returning movie - movieSearchParser");
         logger.info("movie info: " + movie.getTitle() + " " + movie.getCountry() + " " + movie.getYear() + " and id = " + movie.getId());
 
-//        HttpClient client = HttpClient.newHttpClient();
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create(DUMMY_URL))
-//                .build();//        HttpUriRequest request = new HttpGet("https://omdbapi.com/?t=War+of+the+Worlds&type=movie&apikey=4abf25ed");
-//        logger.info(String.valueOf(request));
-////        CloseableHttpClient client = HttpClients.createDefault();
-//        String response = client.execute(request, new BasicHttpClientResponseHandler());
-//        logger.debug("Response -> {}", response);
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        Movie movie = new Movie();
-////        Movie movie = mapper.readValue(response.getEntity().getContent(), Movie.class);
-//        logger.info("completed mapping; returning movie - movieSearchParser");
-//        logger.info("movie info: " + movie.getTitle() + " " + movie.getCountry() + " " + movie.getYear() + " and id = " + movie.getId());
-
         return movie;
 
     }
