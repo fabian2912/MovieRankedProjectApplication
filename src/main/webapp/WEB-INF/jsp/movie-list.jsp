@@ -41,9 +41,6 @@
                                     ">${movie.id}</a>
                     </td>
                     <td>${movie.votes}</td>
-                    <td>
-                            <input id="button" type="submit" value="Upvote" name="Upvote" />
-                    </td>
 
 
                 </tr>
