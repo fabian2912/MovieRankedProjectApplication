@@ -40,7 +40,9 @@ public class Movie {
     @JsonProperty("Actors")
     private String Actors;
 
-    public Movie(String title, String year, String country, String rated, String director, String awards, String boxOffice, String plot, String actors) {
+    private int votes = 1;
+
+    public Movie(String title, String year, String country, String rated, String director, String awards, String boxOffice, String plot, String actors, int votes) {
         Title = title;
         Year = year;
         Country = country;
@@ -50,6 +52,7 @@ public class Movie {
         BoxOffice = boxOffice;
         Plot = plot;
         Actors = actors;
+        this.votes = votes;
     }
 
     public Long getId() {
@@ -151,5 +154,13 @@ public class Movie {
 
     public void setActors(String actors) {
         Actors = actors;
+    }
+
+    public int getVotes() {
+        return votes;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 }

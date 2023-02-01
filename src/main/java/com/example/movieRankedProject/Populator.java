@@ -19,6 +19,7 @@ public class Populator implements CommandLineRunner {
     public void run(String... args) throws Exception {
         MovieSearchParser movieSearchParser = new MovieSearchParser();
         Movie defaultMovie = movieSearchParser.findMovieByTitle("shrek");
+        defaultMovie.setVotes(2);
 //        Movie defaultMovie = new Movie("default","default","default","default","default","default","default","default","default");
         movieRepository.save(defaultMovie);
     }

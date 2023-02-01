@@ -27,9 +27,9 @@
             </tr>
             </thead>
             <tbody>
-            <form action="/movie-list" method="get">
+            <form action="/movie-list/vote" method="post" modelAttribute="movie">
             <c:forEach items="${movieList}" var="movie">
-                <tr>
+            <tr id = ${movie.id}>
                     <td>${movie.title}</td>
                     <td>${movie.year}</td>
                     <td>${movie.country}</td>
@@ -40,19 +40,19 @@
                                                     </c:url>
                                     ">${movie.id}</a>
                     </td>
+                    <td>${movie.votes}</td>
                     <td>
-                        <p id="votes">0<p>
+                            <input id="button" type="submit" value="Upvote" name="Upvote" />
                     </td>
-                    <td>
-                        <button id="upvote" onclick="upvote()">Upvote</button>
-                        <script src="script.js" charset="utf-8"></script>
-                    </td>
+
+
                 </tr>
             </c:forEach>
+
             </form>
 
-            </tbody>
-        </table>
 
+        </tbody>
+        </table>
     </body>
 </html>
