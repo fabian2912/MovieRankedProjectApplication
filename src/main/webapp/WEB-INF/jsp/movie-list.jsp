@@ -34,7 +34,7 @@
                     <td>${movie.year}</td>
                     <td>${movie.country}</td>
                     <td>
-                        <a href = "
+                        <a id="summaryPageLink" href = "
                                                     <c:url value = "/movie-list/summary">
                                                         <c:param name="id" value="${movie.id}" />
                                                     </c:url>
