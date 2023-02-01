@@ -36,7 +36,7 @@ public class MovieController {
 //        ModelAndView modelAndView = new ModelAndView("movie-list");
         ModelAndView modelAndView = new ModelAndView();
 //        List<Movie> movies = movieService.findAll();
-        List<Movie> movies = movieService.findAll();
+        List<Movie> movies = movieService.findAllByVotes();
         System.out.println("the movie size (called from controller) is " + movies.size());
 //        movies.add(movie);
 //        movies.add(movie);
