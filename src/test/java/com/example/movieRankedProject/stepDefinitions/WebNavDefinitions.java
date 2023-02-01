@@ -2,10 +2,12 @@ package com.example.movieRankedProject.stepDefinitions;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -48,4 +50,13 @@ public class WebNavDefinitions {
         assertTrue(pageTitle.contains(title));
     }
 
+    @And("I click the hyperlink")
+    public void iClickTheHyperlink() {
+        webDriver.findElement(By.id("summaryPageLink")).click();
+    }
+
+    @And("I click on the return button")
+    public void iClickOnTheReturnButton() {
+        webDriver.findElement(By.id("return")).click();
+    }
 }
