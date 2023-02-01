@@ -33,23 +33,12 @@ public class MovieController {
     @GetMapping
     public ModelAndView get() {
         logger.info("entering get()");
-//        ModelAndView modelAndView = new ModelAndView("movie-list");
         ModelAndView modelAndView = new ModelAndView();
-//        List<Movie> movies = movieService.findAll();
         List<Movie> movies = movieService.findAll();
         System.out.println("the movie size (called from controller) is " + movies.size());
-//        movies.add(movie);
-//        movies.add(movie);
-//        Movie movie = new Movie(1L, "default", "0000", "0000");
         Movie movie = movieService.findById(1L);
-//        movieService.save(movie);
         modelAndView.addObject("movie", movie);
         if(movies.size() == 0) {
-//            logger.info("if size == 0 entered");
-//            Movie movie = new Movie(1L, "default", "0000", "0000");
-//            movieService.save(movie);
-//            modelAndView.addObject("movie", movie);
-//            logger.info("added movie " + movie.getTitle() + " (should be 'default')");
         } else if (movies.size() > 1){
                 logger.info("movies.size > 1 entered");
             if (movieService.findByTitle("default") != null) {
@@ -99,7 +88,7 @@ public class MovieController {
         return modelAndView;
     }
 
-    @PostMapping // @Valid @ModelAttribute
+    @PostMapping
     public String post(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
         String unrefinedTitle = movie.getTitle();
         String[] splitTitle = unrefinedTitle.split(Pattern.quote(" "));
@@ -115,19 +104,15 @@ public class MovieController {
         System.err.println("in post with title " + title);
 
         ModelAndView modelAndView = new ModelAndView();
-//        ModelAndView modelAndView = new ModelAndView("movie-list");
         MovieSearchParser movieSearchParser = new MovieSearchParser();
 
         if(result.hasErrors()) {
             System.err.println("result has errors - post");
-//            modelAndView.setViewName("movie-list");
             modelAndView.setViewName("redirect");
         } else {
             logger.info("result has no errors - post");
-//            modelAndView.setViewName("movie-list");
             modelAndView.setViewName("redirect");
             logger.info("movie Controller - passing over to MovieSearchParser");
-//            System.err.println(movieService.findByTitle(title) + "---------------------");
 
             if (movieService.findByTitle(title) != null) {
                 System.err.println("movie " + title + " is already in the database; incrementing the vote counter");
@@ -140,7 +125,6 @@ public class MovieController {
                 Movie movie1 = movieSearchParser.findMovieByTitle(title);
                 if (movie1.getTitle() != null && movie1.getCountry() != null) { // checking that api returned valid movie
                     movie1 = movieService.save(movie1);
-//            modelAndView.addObject("addMovieTitle", movie.getTitle());
                     modelAndView.addObject("movie", movie1);
                     System.err.println("valid movie added");
                 }
@@ -152,68 +136,8 @@ public class MovieController {
             }
         }
         logger.info("exiting post");
-
-//        if (movieService.findByTitle("default") != null) {
-//            System.err.println("deleting default from post method");
-//            movieService.delete(movieService.findByTitle("default"));
-//        }
-
-//        logger.info("called get()");
         return "redirect:movie-list";
     }
-
-//    @RequestMapping("/vote")
-//    @RequestMapping(value = "/vote", method = RequestMethod.POST, params = "Upvote")
-    @PostMapping("/vote") // @Valid @ModelAttribute "/vote"
-    public String post1(@Valid @ModelAttribute Movie movie, BindingResult result) throws IOException {
-        System.err.println("new post mapping to update votes");
-
-        System.err.println("the movie in the post1 method is " + movie.getTitle());
-//        movie = movieService.findById(id)
-
-        ModelAndView modelAndView = new ModelAndView();
-//        ModelAndView modelAndView = new ModelAndView("movie-list");
-
-        if(result.hasErrors()) {
-            System.err.println("result has errors - post");
-//            modelAndView.setViewName("movie-list");
-            modelAndView.setViewName("redirect");
-        } else {
-            System.err.println("updating movie votes in new post method");
-//            Movie movie1 = new Movie(movie.getTitle(), movie.getYear(),
-//                    movie.getCountry(),movie.getRated(),movie.getDirector(),movie.getAwards(),
-//                    movie.getBoxOffice(),movie.getPlot(),movie.getActors(),movie.getVotes() + 1);
-//            movieService.delete(movie);
-//            movieService.save(movie1);
-//            modelAndView.addObject("movie", movie1);
-
-//            Movie movie1 = movieService.findByTitle(movie.getTitle());
-//            movie1.setVotes(1 + movie.getVotes());
-//            movieService.save(movie1);
-            System.err.println(movie.getTitle() + " has " + movie.getVotes() + " votes");
-            movie.setVotes(1 + movie.getVotes());
-            movieService.save(movie);
-            System.err.println(movie.getTitle() + " has " + movie.getVotes() + " votes");
-
-        }
-        return "redirect:";
-
-    }
-
-//    @PostMapping
-//    public ModelAndView post(@Valid @ModelAttribute String title, BindingResult result) throws IOException {
-//        MovieSearchParser msp1 = new MovieSearchParser();
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        if(result.hasErrors()) {
-//            modelAndView.setViewName("movies");
-//        } else {
-//            modelAndView.setViewName("movies");
-//            Movie movie = msp1.findMovieByTitle(title);
-//            modelAndView.addObject("movie", movie);
-//        }
-//        return modelAndView;
-//    }
 
     @GetMapping("/edit")
     public ModelAndView edit(@PathParam("id") Long id) {
@@ -223,23 +147,16 @@ public class MovieController {
         return modelAndView;
     }
 
-//    @PutMapping
-//    public @ResponseBody String put() {
-//        return "put";
-//    }
-
     @PutMapping
     public @ResponseBody String put(@Valid @ModelAttribute Movie movie, BindingResult result) {
 
         System.err.println("entering put mapping");
 
         ModelAndView modelAndView = new ModelAndView();
-//        ModelAndView modelAndView = new ModelAndView("movie-list");
         MovieSearchParser movieSearchParser = new MovieSearchParser();
 
         if(result.hasErrors()) {
             System.err.println("result has errors - post");
-//            modelAndView.setViewName("movie-list");
             modelAndView.setViewName("redirect");
         } else {
             System.err.println("updating movie votes in put");
