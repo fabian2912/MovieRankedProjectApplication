@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/movie")
+@RequestMapping("/movie-search")
 public class MovieSearchController {
 
     Logger logger = LoggerFactory.getLogger(MovieSearchController.class);
