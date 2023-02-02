@@ -162,7 +162,7 @@ public class MovieController {
             System.err.println("updating movie votes in put");
             Movie movie1 = new Movie(movie.getTitle(), movie.getYear(),
                     movie.getCountry(),movie.getRated(),movie.getDirector(),movie.getAwards(),
-                    movie.getBoxOffice(),movie.getPlot(),movie.getActors(),movie.getVotes() + 1);
+                    movie.getBoxOffice(),movie.getPlot(),movie.getActors(),movie.getPoster(), movie.getVotes() + 1);
             movieService.delete(movie);
             movieService.save(movie1);
             modelAndView.addObject("movie", movie1);
